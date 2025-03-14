@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tolrom</groupId>
-    <artifactId>springLibrary</artifactId>
+    <artifactId>springBook</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springLibrary</name>
     <description>springLibrary</description>

@@ -1,7 +1,7 @@
-package com.adrar.cdah2.exception;
+package com.tolrom.springlibrary.exception;
 
-public class NoLivreFoundException extends RuntimeException {
-    public NoLivreFoundException() {
-        super("Aucun livre dans la base de données");
+public class NoBookFoundException extends RuntimeException {
+    public NoBookFoundException() {
+        super("No book in the database");
     }
 }

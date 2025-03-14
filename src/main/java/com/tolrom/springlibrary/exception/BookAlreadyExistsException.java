@@ -1,7 +1,7 @@
 package com.tolrom.springlibrary.exception;
 
-public class BookAlreadyExists extends RuntimeException {
-  public BookAlreadyExists(String message) {
-    super(message);
-  }
+public class BookAlreadyExistsException extends RuntimeException {
+    public BookAlreadyExistsException(String title) {
+        super("The " + title + " book already exists");
+    }
 }
