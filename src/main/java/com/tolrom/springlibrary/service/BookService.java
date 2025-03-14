@@ -1,10 +1,12 @@
 package com.tolrom.springlibrary.service;
 
+import com.tolrom.springlibrary.dto.BookDTO;
 import com.tolrom.springlibrary.model.Book;
 import com.tolrom.springlibrary.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -21,8 +23,21 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public ArrayList<BookDTO> findAllBookDTOs() {
+        Iterable<Book> books = findAllBooks();
+        ArrayList<BookDTO> dtos = new ArrayList<>();
+        for (Book book : books) {
+            dtos.add(BookDtoWrapper.toDTO(book));
+        }
+        return dtos;
+    }
+
     public Optional<Book> findBookById(Long id) {
         return bookRepository.findById(id);
+    }
+
+    public Optional<BookDTO> findBookDTOById(Long id) {
+        return bookRepository.findById(id).map(BookDtoWrapper::toDTO);
     }
 
     public Book add(Book book) {

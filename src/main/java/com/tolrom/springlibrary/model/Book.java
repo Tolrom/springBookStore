@@ -21,6 +21,15 @@ public class Book {
     @Column(name= "publication_date", nullable = false)
     private Date publicationDate;
 
+    @Column(name="genre", nullable = true)
+    private String genre;
+
+    @Column(name="author", nullable = true)
+    private String author;
+
+    @Column(name = "editor", nullable = true)
+    private String editor;
+
     public Book() {}
 
     public Book(String title, String description, Date publicationDate ) {
@@ -59,6 +68,30 @@ public class Book {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
     }
 
     @Override
