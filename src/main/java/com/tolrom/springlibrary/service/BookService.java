@@ -1,6 +1,7 @@
 package com.tolrom.springlibrary.service;
 
 import com.tolrom.springlibrary.dto.BookDTO;
+import com.tolrom.springlibrary.exception.BookAlreadyExistsException;
 import com.tolrom.springlibrary.model.Book;
 import com.tolrom.springlibrary.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +33,26 @@ public class BookService {
         return dtos;
     }
 
-    public Optional<Book> findBookById(Long id) {
+    public Optional<Book> findBookById(Integer id) {
         return bookRepository.findById(id);
     }
 
-    public Optional<BookDTO> findBookDTOById(Long id) {
+    public Optional<BookDTO> findBookDTOById(Integer id) {
         return bookRepository.findById(id).map(BookDtoWrapper::toDTO);
     }
 
     public Book add(Book book) {
+        if(bookRepository.existsBookByTitle(book.getTitle())) {
+            if(bookRepository.existsBookByDescription(book.getDescription())) {
+                if(bookRepository.existsBookByPublicationDate(book.getPublicationDate())) {
+                    throw new BookAlreadyExistsException(book.getTitle());
+                }
+            }
+        }
         return bookRepository.save(book);
     }
 
-    public Book update(Book book, Long id) {
+    public Book update(Book book, Integer id) {
         Optional<Book> oldBook = bookRepository.findById(id);
         if(oldBook.isPresent()) {
             ((Book) oldBook.get()).setTitle(book.getTitle());
@@ -55,7 +63,7 @@ public class BookService {
         return null;
     }
 
-    public Iterable<Book> delete(Long id) {
+    public Iterable<Book> delete(Integer id) {
         Book book = bookRepository.findById(id).orElse(new Book());
         bookRepository.delete(book);
         return this.findAllBooks();

@@ -4,9 +4,14 @@ import com.tolrom.springlibrary.exception.BookAlreadyExistsException;
 import com.tolrom.springlibrary.exception.BookNotFoundException;
 import com.tolrom.springlibrary.exception.NoBookFoundException;
 import com.tolrom.springlibrary.model.Book;
+import com.tolrom.springlibrary.model.Genre;
 import com.tolrom.springlibrary.repository.BookRepository;
+import com.tolrom.springlibrary.repository.EditorRepository;
+import com.tolrom.springlibrary.repository.GenreRepository;
+import com.tolrom.springlibrary.repository.UserRepository;
 import com.tolrom.springlibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,6 +24,12 @@ public class BookController {
     private BookService bookService;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private GenreRepository genreRepository;
+    @Autowired
+    private EditorRepository editorRepository;
 
     @GetMapping
     public Iterable<Book> getAllBooks() {
@@ -29,7 +40,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
+    public Book getBookById(@PathVariable Integer id) {
         System.out.println(bookService.findBookById(id));
         return bookService.findBookById(id).orElseThrow(
                 ()-> new BookNotFoundException(id)
@@ -38,18 +49,11 @@ public class BookController {
 
     @PostMapping("/add")
     public Book addBook(@RequestBody Book book) {
-        if(bookRepository.existsBookByTitle(book.getTitle())) {
-            if(bookRepository.existsBookByDescription(book.getDescription())) {
-                if(bookRepository.existsBookByPublicationDate(book.getPublicationDate())) {
-                    throw new BookAlreadyExistsException(book.getTitle());
-                }
-            }
-        }
         return bookService.add(book);
     }
 
     @PatchMapping("/update/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
+    public Book updateBook(@RequestBody Book book, @PathVariable Integer id) {
         if(bookRepository.existsById(id)) {
             return bookService.update(book, id);
         }
@@ -59,7 +63,7 @@ public class BookController {
     }
 
     @DeleteMapping("/remove")
-    public Iterable<Book> removeBook(@PathVariable Long id) {
+    public Iterable<Book> removeBook(@PathVariable Integer id) {
         return bookService.delete(id);
     }
 }

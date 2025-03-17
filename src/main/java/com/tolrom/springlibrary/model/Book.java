@@ -3,6 +3,8 @@ package com.tolrom.springlibrary.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -10,7 +12,7 @@ import java.sql.Date;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="title", nullable = false)
     private String title;
@@ -21,28 +23,36 @@ public class Book {
     @Column(name= "publication_date", nullable = false)
     private Date publicationDate;
 
-    @Column(name="genre", nullable = true)
-    private String genre;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User author;
 
-    @Column(name="author", nullable = true)
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "id_editor")
+    private Editor editor;
 
-    @Column(name = "editor", nullable = true)
-    private String editor;
+    @ManyToMany
+    @JoinTable(name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private Set<Genre> genres;
 
     public Book() {}
 
-    public Book(String title, String description, Date publicationDate ) {
+    public Book(String title, String description, Date publicationDate, User author, Editor editor) {
         this.title = title;
         this.description = description;
         this.publicationDate = publicationDate;
+        this.author = author;
+        this.editor = editor;
+        this.genres = new HashSet<>();
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -70,28 +80,31 @@ public class Book {
         this.publicationDate = publicationDate;
     }
 
-    public String getGenre() {
-        return genre;
-    }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getEditor() {
+    public Editor getEditor() {
         return editor;
     }
 
-    public void setEditor(String editor) {
+    public void setEditor(Editor editor) {
         this.editor = editor;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+    public void removeGenre(Genre genre) {
+        this.genres.remove(genre);
+    }
+    public void addGenre(Genre genre) {
+        this.genres.add(genre);
     }
 
     @Override

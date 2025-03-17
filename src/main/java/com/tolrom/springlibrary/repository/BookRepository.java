@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 
 @Repository
-public interface BookRepository extends CrudRepository<Book, Long> {
+public interface BookRepository extends CrudRepository<Book, Integer> {
     boolean existsBookByTitle(String title);
 
     boolean existsBookByDescription(String description);
