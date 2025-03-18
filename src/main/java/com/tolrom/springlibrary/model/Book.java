@@ -1,6 +1,9 @@
 package com.tolrom.springlibrary.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.sql.Date;
 import java.util.HashSet;
@@ -15,9 +18,13 @@ public class Book {
     private Integer id;
 
     @Column(name="title", nullable = false)
+    @NotBlank(message = "Must have a title!")
+    @Size(min = 5,max = 255, message = "Must be 3 characters long and shorter than 255")
     private String title;
 
     @Column(name="description", nullable = false)
+    @NotBlank(message = "Must have a description")
+    @Size(min = 5,max = 255, message = "Must be 5 characters long and shorter than 255")
     private  String description;
 
     @Column(name= "publication_date", nullable = false)
@@ -25,6 +32,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @NotNull(message = "Must have an author")
     private User author;
 
     @ManyToOne

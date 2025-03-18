@@ -1,6 +1,10 @@
 package com.tolrom.springlibrary.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +18,8 @@ public class Genre {
     private int id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Must have a name!")
+    @Size(min = 3,max = 255, message = "Must be 3 characters long and shorter than 255")
     private String name;
 
     public Genre() {

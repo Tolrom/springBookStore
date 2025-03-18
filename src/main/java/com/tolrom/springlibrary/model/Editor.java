@@ -1,6 +1,11 @@
 package com.tolrom.springlibrary.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "editor")
@@ -11,9 +16,13 @@ public class Editor {
     private int id;
 
     @Column(name = "label", nullable = false)
+    @NotBlank(message = "Must have a label!")
+    @Size(min = 2,max = 255, message = "Must be 2 characters long and shorter than 255")
     private String label;
 
     @Column(name = "description", nullable = false)
+    @NotNull(message = "Can't be null")
+    @Size(min = 5,max = 255, message = "Must be 5 characters long and shorter than 255")
     private String description;
 
     public Editor() {
